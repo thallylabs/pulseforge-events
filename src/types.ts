@@ -40,3 +40,53 @@ export interface CreateIncidentUpdateInput {
   message: string;
   status?: "investigating" | "monitoring";
 }
+
+export type AlertEventType =
+  | "incident.opened"
+  | "incident.updated"
+  | "incident.escalated"
+  | "incident.resolved";
+
+export interface AlertDestination {
+  kind: "email" | "webhook";
+  target: string;
+}
+
+export interface AlertRule {
+  id: string;
+  name: string;
+  eventTypes: Array<AlertEventType>;
+  destination: AlertDestination;
+  isEnabled: boolean;
+  cooldownSeconds: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface CreateAlertRuleInput {
+  name: string;
+  eventTypes: Array<AlertEventType>;
+  destination: AlertDestination;
+  cooldownSeconds?: number;
+}
+
+export interface UpdateAlertRuleInput {
+  name?: string;
+  eventTypes?: Array<AlertEventType>;
+  destination?: AlertDestination;
+  isEnabled?: boolean;
+  cooldownSeconds?: number;
+}
+
+export interface AlertDelivery {
+  id: string;
+  ruleId: string;
+  eventType: AlertEventType;
+  status: "delivered" | "failed";
+  attemptedAt: string;
+}
+
+export interface AlertRuleTestResult {
+  rule: AlertRule;
+  delivery: AlertDelivery;
+}
