@@ -1,0 +1,57 @@
+openapi: 3.1.0
+info:
+  title: Pulseforge Events API
+  version: 1.0.0
+  description: Publish public service status and manage incident timelines.
+servers:
+  - url: https://status.example.com
+paths:
+  /v1/status:
+    get:
+      operationId: getStatus
+      summary: Read the current public status
+      responses:
+        "200":
+          description: Current service status and active incidents
+  /v1/incidents:
+    post:
+      operationId: createIncident
+      summary: Open an incident
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: Incident created
+  /v1/incidents/{incidentId}/updates:
+    post:
+      operationId: addIncidentUpdate
+      summary: Add a timeline update
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Incident updated
+  /v1/incidents/{incidentId}/resolve:
+    patch:
+      operationId: resolveIncident
+      summary: Resolve an incident
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: incidentId
+          required: true
+          schema: { type: string }
+      responses:
+        "200":
+          description: Incident resolved
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
