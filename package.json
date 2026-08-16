@@ -1,12 +1,13 @@
 {
   "name": "@pulseforge/events",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Incident communication API, browser SDK, and embeddable status widget.",
   "type": "module",
   "exports": {
     ".": "./dist/index.js",
     "./sdk": "./dist/sdk.js",
-    "./widget": "./dist/widget.js"
+    "./widget": "./dist/widget.js",
+    "./alert-center": "./dist/alert-center.js"
   },
   "files": [
     "dist",

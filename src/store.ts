@@ -7,8 +7,9 @@ import type {
   Service,
   StatusSummary,
 } from "./types.js";
+import { createAlertRuleRegistry, type AlertRuleRegistry } from "./alert-rules.js";
 
-export interface PulseforgeStore {
+export interface PulseforgeStore extends AlertRuleRegistry {
   getStatus(): StatusSummary;
   createIncident(input: CreateIncidentInput): Incident;
   addIncidentUpdate(id: string, input: CreateIncidentUpdateInput): Incident | undefined;
@@ -19,9 +20,11 @@ export function createPulseforgeStore(
   services: Array<Service> = [{ id: "events-api", name: "Events API", status: "operational" }],
 ): PulseforgeStore {
   const incidents = new Map<string, Incident>();
+  const alertRules = createAlertRuleRegistry();
   let sequence = 0;
 
   return {
+    ...alertRules,
     getStatus() {
       const activeIncidents = [...incidents.values()].filter(
         (incident) => incident.status !== "resolved",
